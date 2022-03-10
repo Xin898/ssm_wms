@@ -109,12 +109,17 @@ public class CustomerManageHandler {
      * @param customer 客户信息
      * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与 error
      */
-    @PostMapping("/addCustomer")
+    @RequestMapping("/addCustomer")
     public
     @ResponseBody
-    Map<String, Object> addCustomer(@RequestBody Customer customer) throws CustomerManageServiceException {
+    Map<String, Object> addCustomer(@ModelAttribute Customer customer) throws CustomerManageServiceException {
+
+        System.out.println(">>>> Method addCustomer is triggered ");
         // 初始化 Response
         Response responseContent = ResponseFactory.newInstance();
+
+        // 当前用户信息
+        System.out.println(customer.toString());
 
         // 添加记录
         String result = customerManageService.addCustomer(customer) ? Response.RESPONSE_RESULT_SUCCESS : Response.RESPONSE_RESULT_ERROR;
@@ -135,6 +140,8 @@ public class CustomerManageHandler {
     @ResponseBody
     Map<String, Object> getCustomerInfo(@RequestParam("customerID") String customerID)
             throws CustomerManageServiceException {
+        System.out.println(">>>>> Method getCustomer triggered");
+
         // 初始化 Response
         Response responseContent = ResponseFactory.newInstance();
         String result = Response.RESPONSE_RESULT_ERROR;
@@ -168,10 +175,12 @@ public class CustomerManageHandler {
      * @param customer 客户信息
      * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与 error
      */
-    @RequestMapping(value = "updateCustomer", method = RequestMethod.POST)
+    @PatchMapping("/updateCustomer")
     public
     @ResponseBody
-    Map<String, Object> updateCustomer(@RequestBody Customer customer) throws CustomerManageServiceException {
+    Map<String, Object> updateCustomer(@ModelAttribute Customer customer) throws CustomerManageServiceException {
+
+        System.out.println(customer.getName());
         // 初始化 Response
         Response responseContent = ResponseFactory.newInstance();
 
@@ -188,7 +197,7 @@ public class CustomerManageHandler {
      * @param customerIDStr 客户ID
      * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与 error
      */
-    @RequestMapping(value = "deleteCustomer", method = RequestMethod.GET)
+    @DeleteMapping("/delCustomer")
     public
     @ResponseBody
     Map<String, Object> deleteCustomer(@RequestParam("customerID") String customerIDStr) throws CustomerManageServiceException {

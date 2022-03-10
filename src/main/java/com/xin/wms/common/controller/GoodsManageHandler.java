@@ -10,13 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +19,8 @@ import java.util.Map;
  *
  * @author Ken
  */
-@RequestMapping(value = "/**/goodsManage")
-@Controller
+@RestController
+@RequestMapping(value = "/goodsManage")
 public class GoodsManageHandler {
 
     @Autowired
@@ -77,12 +71,14 @@ public class GoodsManageHandler {
      * @return 返回所有符合要求的记录
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = "getGoodsList", method = RequestMethod.GET)
+    @PostMapping("/getGoodsList")
     public
     @ResponseBody
     Map<String, Object> getGoodsList(@RequestParam("searchType") String searchType,
                                      @RequestParam("offset") int offset, @RequestParam("limit") int limit,
                                      @RequestParam("keyWord") String keyWord) throws GoodsManageServiceException {
+
+        System.out.println(searchType + " " + offset + " " + limit + " " + keyWord);
         // 初始化 Response
         Response responseContent = ResponseFactory.newInstance();
         List<Supplier> rows = null;
@@ -108,7 +104,7 @@ public class GoodsManageHandler {
      * @param goods 货物信息
      * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与 error
      */
-    @RequestMapping(value = "addGoods", method = RequestMethod.POST)
+    @RequestMapping(value = "addGoods", method = RequestMethod.PUT)
     public
     @ResponseBody
     Map<String, Object> addGoods(@RequestBody Goods goods) throws GoodsManageServiceException {
