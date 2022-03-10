@@ -104,10 +104,10 @@ public class GoodsManageHandler {
      * @param goods 货物信息
      * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与 error
      */
-    @RequestMapping(value = "addGoods", method = RequestMethod.PUT)
+    @PutMapping("/addGoods")
     public
     @ResponseBody
-    Map<String, Object> addGoods(@RequestBody Goods goods) throws GoodsManageServiceException {
+    Map<String, Object> addGoods(@ModelAttribute Goods goods) throws GoodsManageServiceException {
         // 初始化 Response
         Response responseContent = ResponseFactory.newInstance();
 
@@ -157,10 +157,10 @@ public class GoodsManageHandler {
      * @param goods 货物信息
      * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与 error
      */
-    @RequestMapping(value = "updateGoods", method = RequestMethod.POST)
+    @PatchMapping("/updateGoods")
     public
     @ResponseBody
-    Map<String, Object> updateGoods(@RequestBody Goods goods) throws GoodsManageServiceException {
+    Map<String, Object> updateGoods(@ModelAttribute Goods goods) throws GoodsManageServiceException {
         // 初始化 Response
         Response responseContent = ResponseFactory.newInstance();
 
