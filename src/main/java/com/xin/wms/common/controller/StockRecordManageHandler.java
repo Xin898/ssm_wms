@@ -12,10 +12,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -28,8 +25,8 @@ import java.util.Map;
  * @author Ken
  * @since 017/4/5.
  */
-@Controller
-@RequestMapping(value = "stockRecordManage")
+@RestController
+@RequestMapping("/**/stockRecordManage")
 public class StockRecordManageHandler {
 
     @Autowired
@@ -44,7 +41,7 @@ public class StockRecordManageHandler {
      * @param number          出库数量
      * @return 返回一个map，key为result的值表示操作是否成功
      */
-    @RequestMapping(value = "stockOut", method = RequestMethod.POST)
+    @PostMapping("/stockOut")
     public
     @ResponseBody
     Map<String, Object> stockOut(@RequestParam("customerID") Integer customerID,
@@ -104,13 +101,15 @@ public class StockRecordManageHandler {
      * @param number          入库数目
      * @return 返回一个map，key为result的值表示操作是否成功
      */
-    @RequestMapping(value = "stockIn", method = RequestMethod.POST)
+    @PostMapping( "/stockIn")
     public
     @ResponseBody
     Map<String, Object> stockIn(@RequestParam("supplierID") Integer supplierID,
                                 @RequestParam("goodsID") Integer goodsID,
                                 @RequestParam(value = "repositoryID", required = false) String repositoryIDStr,
                                 @RequestParam("number") long number) throws StockRecordManageServiceException {
+
+        System.out.println(supplierID + " " + goodsID + " " + repositoryIDStr + " " + number);
         // 初始化 Response
         Response responseContent = ResponseFactory.newInstance();
         String result = Response.RESPONSE_RESULT_ERROR;
@@ -169,14 +168,14 @@ public class StockRecordManageHandler {
      * @return 返回一个Map，其中：Key为rows的值代表所有记录数据，Key为total的值代表记录的总条数
      */
     @SuppressWarnings({"SingleStatementInBlock", "unchecked"})
-    @RequestMapping(value = "searchStockRecord", method = RequestMethod.GET)
+    @GetMapping("/searchStockRecord")
     public @ResponseBody
     Map<String, Object> getStockRecord(@RequestParam("searchType") String searchType,
                                        @RequestParam("repositoryID") String repositoryIDStr,
                                        @RequestParam("startDate") String startDateStr,
                                        @RequestParam("endDate") String endDateStr,
-                                       @RequestParam("limit") int limit,
-                                       @RequestParam("offset") int offset) throws ParseException, StockRecordManageServiceException {
+                                       @RequestParam("limit") Integer limit,
+                                       @RequestParam("offset") Integer offset) throws ParseException, StockRecordManageServiceException {
         // 初始化 Response
         Response responseContent = ResponseFactory.newInstance();
         List<StockRecordDTO> rows = null;

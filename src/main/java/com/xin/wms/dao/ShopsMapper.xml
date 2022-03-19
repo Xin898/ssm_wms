@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xin.wms.dao.ShopsMapper">
+
+    <resultMap type="com.xin.wms.pojo.Shop" id="shop">
+        <id property="id" column="SHOP_ID"/>
+        <result property="shopName" column="SHOP_NAME"/>
+        <result property="shopPlatform" column="SHOP_PLATFORM"/>
+        <result property="customerUrl" column="CUSTOMER_URI"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="shop">
+        select
+            g.SHOP_ID,
+            g.SHOP_NAME,
+            g.SHOP_PLATFORM,
+            g.CUSTOMER_URI
+        from
+            wmss_shop g
+    </select>
+
+    <select id="selectById" resultMap="shop">
+        select
+            g.SHOP_ID,
+            g.SHOP_NAME,
+            g.SHOP_PLATFORM,
+            g.CUSTOMER_URI
+        from
+            wmss_shop g
+        where
+            g.SHOP_ID = #{id}
+    </select>
+
+    <select id="selectByName" resultMap="shop">
+        select
+            g.SHOP_ID,
+            g.SHOP_NAME,
+            g.SHOP_PLATFORM,
+            g.CUSTOMER_URI
+        from
+            wmss_shop g
+        where
+            g.SHOP_NAME = #{shopName}
+    </select>
+
+    <select id="selectApproximateByName" resultMap="shop">
+        select
+            g.SHOP_ID,
+            g.SHOP_NAME,
+            g.SHOP_PLATFORM,
+            g.CUSTOMER_URI
+        from
+            wmss_shop g
+        where
+            g.SHOP_NAME like concat(concat('%',#{shopName}),'%')
+    </select>
+
+    <insert id="insert">
+        insert into wmss_shops(SHOP_NAME,SHOP_PLATFORM,CUSTOMER_URI)
+        values (#{shopName},#{shopPlatform},#{customerUrl})
+    </insert>
+
+    <insert id="insertBatch">
+        insert into wmss_shop(SHOP_NAME,SHOP_PLATFORM,CUSTOMER_URI)
+        values
+        <foreach collection="list" item="shops" separator=",">
+            (#{shops.shopName},#{shops.shopPlatform},#{shops.customerUrl})
+        </foreach>
+    </insert>
+
+    <update id="update">
+        update
+            wmss_shop
+        set
+            SHOP_NAME = #{shopName},
+            SHOP_PLATFORM = #{shopPlatform},
+            CUSTOMER_URI = #{cutomerUrl}
+        where
+            SHOP_ID = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from wmms_shop
+        where SHOP_ID = #{id}
+    </delete>
+
+    <delete id="deleteByName">
+        delete from wmss_shop
+        where SHOP_NAME = #{shopName}
+    </delete>
+</mapper>

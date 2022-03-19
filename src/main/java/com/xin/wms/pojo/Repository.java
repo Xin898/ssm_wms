@@ -1,8 +1,11 @@
 package com.xin.wms.pojo;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 //子仓库描述
+@Data
 public class Repository implements Serializable {
 
     private Integer id;// 仓库ID
@@ -13,72 +16,4 @@ public class Repository implements Serializable {
     private Integer adminID;//仓库管理员ID
     private String adminName; //仓库管理员名字
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        this.area = area;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
-    public Integer getAdminID() {
-        return adminID;
-    }
-
-    public void setAdminID(Integer adminID) {
-        this.adminID = adminID;
-    }
-
-    public String getAdminName() {
-        return adminName;
-    }
-
-    public void setAdminName(String adminName) {
-        this.adminName = adminName;
-    }
-
-    @Override
-    public String toString() {
-        return "Repository{" +
-                "id=" + id +
-                ", address='" + address + '\'' +
-                ", status='" + status + '\'' +
-                ", area='" + area + '\'' +
-                ", desc='" + desc + '\'' +
-                ", adminID=" + adminID +
-                ", adminName='" + adminName + '\'' +
-                '}';
-    }
 }

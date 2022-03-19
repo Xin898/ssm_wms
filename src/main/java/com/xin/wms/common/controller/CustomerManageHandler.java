@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping(value = "/CustomerManage")
+@RequestMapping(value = "/**/CustomerManage")
 //客户基本信息管理请求 Handler
 public class CustomerManageHandler {
 
@@ -140,8 +140,6 @@ public class CustomerManageHandler {
     @ResponseBody
     Map<String, Object> getCustomerInfo(@RequestParam("customerID") String customerID)
             throws CustomerManageServiceException {
-        System.out.println(">>>>> Method getCustomer triggered");
-
         // 初始化 Response
         Response responseContent = ResponseFactory.newInstance();
         String result = Response.RESPONSE_RESULT_ERROR;
@@ -149,6 +147,7 @@ public class CustomerManageHandler {
         // 获取客户信息
         Customer customer = null;
         System.out.println(">>> Customer ID is " + customerID);
+
         // 检查返回的结果
         Map<String, Object> queryResult = query(SEARCH_BY_ID, customerID, -1, -1);
         ArrayList<Customer> rows = null;

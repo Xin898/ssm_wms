@@ -1,7 +1,10 @@
 package com.xin.wms.pojo;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public class StockRecordDTO implements Serializable{
 
     //记录ID
@@ -28,81 +31,4 @@ public class StockRecordDTO implements Serializable{
     // 出库或入库经手人
     private String personInCharge;
 
-    public Integer getRecordID() {
-        return recordID;
-    }
-
-    public void setRecordID(Integer recordID) {
-        this.recordID = recordID;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getSupplierOrCustomerName() {
-        return supplierOrCustomerName;
-    }
-
-    public void setSupplierOrCustomerName(String supplierOrCustomerName) {
-        this.supplierOrCustomerName = supplierOrCustomerName;
-    }
-
-    public String getGoodsName() {
-        return goodsName;
-    }
-
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
-    }
-
-    public Integer getRepositoryID() {
-        return repositoryID;
-    }
-
-    public void setRepositoryID(Integer repositoryID) {
-        this.repositoryID = repositoryID;
-    }
-
-    public long getNumber() {
-        return number;
-    }
-
-    public void setNumber(long number) {
-        this.number = number;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getPersonInCharge() {
-        return personInCharge;
-    }
-
-    public void setPersonInCharge(String personInCharge) {
-        this.personInCharge = personInCharge;
-    }
-
-    @Override
-    public String toString() {
-        return "StockRecordDTO{" +
-                "recordID=" + recordID +
-                ", type='" + type + '\'' +
-                ", supplierOrCustomerName='" + supplierOrCustomerName + '\'' +
-                ", goodsName='" + goodsName + '\'' +
-                ", repositoryID=" + repositoryID +
-                ", number=" + number +
-                ", time='" + time + '\'' +
-                ", personInCharge='" + personInCharge + '\'' +
-                '}';
-    }
 }

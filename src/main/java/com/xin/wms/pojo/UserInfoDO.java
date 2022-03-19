@@ -1,8 +1,11 @@
 package com.xin.wms.pojo;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 //用户账户信息
+@Data
 public class UserInfoDO implements Serializable {
 
     //用户ID
@@ -17,45 +20,4 @@ public class UserInfoDO implements Serializable {
     //是否为初次登录
     private int firstLogin;
 
-    public Integer getUserID() {
-        return userID;
-    }
-
-    public void setUserID(Integer userID) {
-        this.userID = userID;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getFirstLogin() {
-        return firstLogin;
-    }
-
-    public void setFirstLogin(int firstLogin) {
-        this.firstLogin = firstLogin;
-    }
-
-    @Override
-    public String toString() {
-        return "UserInfoDO{" +
-                "userID=" + userID +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", firstLogin=" + firstLogin +
-                '}';
-    }
 }

@@ -76,7 +76,7 @@ public class SupplierManageHandler {
      * @param keyWord    搜索的关键字
      * @return
      */
-    @RequestMapping(value = "getSupplierList", method = RequestMethod.GET)
+    @GetMapping("/getSupplierList")
     @ResponseBody
     public Map<String, Object> getSupplierList(@RequestParam("searchType") String searchType,
                                                @RequestParam("offset") int offset, @RequestParam("limit") int limit,
@@ -106,10 +106,10 @@ public class SupplierManageHandler {
      * @param supplier 供应商信息
      * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与 error
      */
-    @RequestMapping(value = "addSupplier", method = RequestMethod.POST)
+    @PostMapping("/addSupplier")
     public
     @ResponseBody
-    Map<String, Object> addSupplier(@RequestBody Supplier supplier) throws SupplierManageServiceException {
+    Map<String, Object> addSupplier(@ModelAttribute Supplier supplier) throws SupplierManageServiceException {
         // 初始化 Response
         Response responseContent = ResponseFactory.newInstance();
 
@@ -128,7 +128,7 @@ public class SupplierManageHandler {
      * @return 返回一个map，其中：key 为 result 的值为操作的结果，包括：success 与 error；key 为 data
      * 的值为供应商信息
      */
-    @RequestMapping(value = "getSupplierInfo", method = RequestMethod.GET)
+    @GetMapping(value = "/getSupplierInfo")
     public
     @ResponseBody
     Map<String, Object> getSupplierInfo(@RequestParam("supplierID") int supplierID) throws SupplierManageServiceException {
@@ -157,10 +157,10 @@ public class SupplierManageHandler {
      * @param supplier 供应商信息
      * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与 error
      */
-    @RequestMapping(value = "updateSupplier", method = RequestMethod.POST)
+    @PatchMapping("/updateSupplier")
     public
     @ResponseBody
-    Map<String, Object> updateSupplier(@RequestBody Supplier supplier) throws SupplierManageServiceException {
+    Map<String, Object> updateSupplier(@ModelAttribute Supplier supplier) throws SupplierManageServiceException {
         // 初始化 Response
         Response responseContent = ResponseFactory.newInstance();
 
@@ -178,7 +178,7 @@ public class SupplierManageHandler {
      * @param supplierID 供应商ID
      * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与 error
      */
-    @RequestMapping(value = "deleteSupplier", method = RequestMethod.GET)
+    @DeleteMapping("/deleteSupplier")
     public
     @ResponseBody
     Map<String, Object> deleteSupplier(@RequestParam("supplierID") Integer supplierID) {
@@ -193,82 +193,5 @@ public class SupplierManageHandler {
         return responseContent.generateResponse();
     }
 
-    /**
-     * 导入供应商信息
-     *
-     * @param file 保存有供应商信息的文件
-     * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与
-     * error；key为total表示导入的总条数；key为available表示有效的条数
-     */
-//    @RequestMapping(value = "importSupplier", method = RequestMethod.POST)
-//    public
-//    @ResponseBody
-//    Map<String, Object> importSupplier(@RequestParam("file") MultipartFile file) throws SupplierManageServiceException {
-//        // 初始化 Response
-//        Response responseContent = ResponseFactory.newInstance();
-//        String result = Response.RESPONSE_RESULT_SUCCESS;
-//
-//        // 读取文件内容
-//        int total = 0;
-//        int available = 0;
-//        if (file == null)
-//            result = Response.RESPONSE_RESULT_ERROR;
-//        Map<String, Object> importInfo = supplierManageService.importSupplier(file);
-//        if (importInfo != null) {
-//            total = (int) importInfo.get("total");
-//            available = (int) importInfo.get("available");
-//        }
-//
-//        // 设置 Response
-//        responseContent.setResponseResult(result);
-//        responseContent.setResponseTotal(total);
-//        responseContent.setCustomerInfo("available", available);
-//        return responseContent.generateResponse();
-//    }
-
-    /**
-     * 导出供应商信息
-     *
-     * @param searchType 查找类型
-     * @param keyWord    查找关键字
-     * @param response   HttpServletResponse
-     */
-//    @SuppressWarnings("unchecked")
-//    @RequestMapping(value = "exportSupplier", method = RequestMethod.GET)
-//    public void exportSupplier(@RequestParam("searchType") String searchType, @RequestParam("keyWord") String keyWord,
-//                               HttpServletResponse response) throws SupplierManageServiceException, IOException {
-//
-//        String fileName = "supplierInfo.xlsx";
-//
-//        // 根据查询类型进行查询
-//        List<Supplier> suppliers = null;
-//        Map<String, Object> queryResult;
-//        queryResult = query(searchType, keyWord, -1, -1);
-//
-//        if (queryResult != null) {
-//            suppliers = (List<Supplier>) queryResult.get("data");
-//        }
-//
-//        // 获取生成的文件
-//        File file = supplierManageService.exportSupplier(suppliers);
-//
-//        // 写出文件
-//        if (file != null) {
-//            // 设置响应头
-//            response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
-//            FileInputStream inputStream = new FileInputStream(file);
-//            OutputStream outputStream = response.getOutputStream();
-//            byte[] buffer = new byte[8192];
-//
-//            int len;
-//            while ((len = inputStream.read(buffer, 0, buffer.length)) > 0) {
-//                outputStream.write(buffer, 0, len);
-//                outputStream.flush();
-//            }
-//
-//            inputStream.close();
-//            outputStream.close();
-//        }
-//    }
 }
 

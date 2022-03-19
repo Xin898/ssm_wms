@@ -20,7 +20,7 @@ import java.util.Map;
  * @author Ken
  */
 @RestController
-@RequestMapping(value = "/goodsManage")
+@RequestMapping(value = "/**/goodsManage")
 public class GoodsManageHandler {
 
     @Autowired

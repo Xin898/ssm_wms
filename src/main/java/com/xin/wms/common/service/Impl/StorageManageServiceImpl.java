@@ -34,8 +34,6 @@ public class StorageManageServiceImpl implements StorageManageService {
     private GoodsMapper goodsMapper;
     @Autowired
     private RepositoryMapper repositoryMapper;
-//    @Autowired
-//    private EJConvertor ejConvertor;
 
     /**
      * 返回所有的库存记录

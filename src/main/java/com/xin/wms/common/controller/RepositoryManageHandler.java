@@ -4,6 +4,7 @@ import com.xin.wms.common.service.Interface.RepositoryService;
 import com.xin.wms.common.util.Response;
 import com.xin.wms.common.util.ResponseFactory;
 import com.xin.wms.exception.RepositoryManageServiceException;
+import com.xin.wms.pojo.Customer;
 import com.xin.wms.pojo.Repository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ import java.util.Map;
  *
  * @author Ken
  */
-@Controller
+@RestController
 @RequestMapping(value = "/**/repositoryManage")
 public class RepositoryManageHandler {
 
@@ -79,7 +80,7 @@ public class RepositoryManageHandler {
      * @return 返回一个Map，其中key=rows，表示查询出来的记录；key=total，表示记录的总条数
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = "getRepositoryList", method = RequestMethod.GET)
+    @GetMapping("/getRepositoryList")
     public
     @ResponseBody
     Map<String, Object> getRepositoryList(@RequestParam("searchType") String searchType,
@@ -111,7 +112,7 @@ public class RepositoryManageHandler {
      * @return 返回一个 map，其中key=data表示查询的记录，key=total表示记录的条数
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = "getUnassignRepository", method = RequestMethod.GET)
+    @GetMapping("/getUnassignRepository")
     public
     @ResponseBody
     Map<String, Object> getUnassignRepository() throws RepositoryManageServiceException {
@@ -139,10 +140,10 @@ public class RepositoryManageHandler {
      * @param repository 仓库信息
      * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与 error
      */
-    @RequestMapping(value = "addRepository", method = RequestMethod.POST)
+    @PostMapping("/addRepository")
     public
     @ResponseBody
-    Map<String, Object> addRepository(@RequestBody Repository repository) throws RepositoryManageServiceException {
+    Map<String, Object> addRepository(@ModelAttribute Repository repository) throws RepositoryManageServiceException {
         // 初始化 Response
         Response responseContent = ResponseFactory.newInstance();
 
@@ -161,7 +162,7 @@ public class RepositoryManageHandler {
      * @return 返回一个map，其中：key 为 result 的值为操作的结果，包括：success 与 error；key 为 data
      * 的值为仓库信息
      */
-    @RequestMapping(value = "getRepositoryInfo", method = RequestMethod.GET)
+    @GetMapping("/getRepositoryInfo")
     public
     @ResponseBody
     Map<String, Object> getRepositoryInfo(@RequestParam("repositoryID") Integer repositoryID) throws RepositoryManageServiceException {
@@ -172,141 +173,71 @@ public class RepositoryManageHandler {
         // 查询
         Repository repository = null;
         Map<String, Object> queryResult = repositoryService.selectById(repositoryID);
+        ArrayList<Repository> rows = null;
+        long total = 0;
         if (queryResult != null) {
-            repository = (Repository) queryResult.get("data");
-            if (repository != null)
-                result = Response.RESPONSE_RESULT_SUCCESS;
+            rows = (ArrayList<Repository>) queryResult.get("data");
+            total = (long) queryResult.get("total");
+            for (Repository rps : rows) {
+                System.out.println(total + " >>>> " + rps.toString());
+                repository = rps;
+                if (rps != null) {
+                    result = Response.RESPONSE_RESULT_SUCCESS;
+                }
+            }
         }
 
-        // 设置 Response
-        responseContent.setResponseResult(result);
-        responseContent.setResponseData(repository);
-        return responseContent.generateResponse();
+            // 设置 Response
+            responseContent.setResponseResult(result);
+            responseContent.setResponseData(repository);
+            return responseContent.generateResponse();
     }
 
-    /**
-     * 更新仓库信息
-     *
-     * @param repository 仓库信息
-     * @return 返回一个map，其中：key 为 result 的值为操作的结果，包括：success 与 error；key 为 data
-     * 的值为仓库信息
-     */
-    @RequestMapping(value = "updateRepository", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    Map<String, Object> updateRepository(@RequestBody Repository repository) throws RepositoryManageServiceException {
-        // 初始化 Response
-        Response responseContent = ResponseFactory.newInstance();
 
-        // 更新
-        String result = repositoryService.updateRepository(repository) ? Response.RESPONSE_RESULT_SUCCESS : Response.RESPONSE_RESULT_ERROR;
+        /**
+         * 更新仓库信息
+         *
+         * @param repository 仓库信息
+         * @return 返回一个map，其中：key 为 result 的值为操作的结果，包括：success 与 error；key 为 data
+         * 的值为仓库信息
+         */
+        @PostMapping("/ ")
+        public
+        @ResponseBody
+        Map<String, Object> updateRepository (@ModelAttribute Repository repository) throws
+        RepositoryManageServiceException {
+            // 初始化 Response
+            Response responseContent = ResponseFactory.newInstance();
 
-        // 设置 Response
-        responseContent.setResponseResult(result);
-        return responseContent.generateResponse();
-    }
+            // 更新
+            String result = repositoryService.updateRepository(repository) ? Response.RESPONSE_RESULT_SUCCESS : Response.RESPONSE_RESULT_ERROR;
 
-    /**
-     * 删除指定 ID 的仓库信息
-     *
-     * @param repositoryID 仓库ID
-     * @return 返回一个map，其中：key 为 result 的值为操作的结果，包括：success 与 error；key 为 data
-     * 的值为仓库信息
-     */
-    @RequestMapping(value = "deleteRepository", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Map<String, Object> deleteRepository(@RequestParam("repositoryID") Integer repositoryID) throws RepositoryManageServiceException {
-        // 初始化 Response
-        Response responseContent = ResponseFactory.newInstance();
+            // 设置 Response
+            responseContent.setResponseResult(result);
+            return responseContent.generateResponse();
+        }
 
-        // 删除记录
-        String result = repositoryService.deleteRepository(repositoryID) ? Response.RESPONSE_RESULT_SUCCESS : Response.RESPONSE_RESULT_ERROR;
+        /**
+         * 删除指定 ID 的仓库信息
+         *
+         * @param repositoryID 仓库ID
+         * @return 返回一个map，其中：key 为 result 的值为操作的结果，包括：success 与 error；key 为 data
+         * 的值为仓库信息
+         */
+        @GetMapping("/deleteRepository")
+        public
+        @ResponseBody
+        Map<String, Object> deleteRepository (@RequestParam("repositoryID") Integer repositoryID) throws
+        RepositoryManageServiceException {
+            // 初始化 Response
+            Response responseContent = ResponseFactory.newInstance();
 
-        // 设置 Response
-        responseContent.setResponseResult(result);
-        return responseContent.generateResponse();
-    }
+            // 删除记录
+            String result = repositoryService.deleteRepository(repositoryID) ? Response.RESPONSE_RESULT_SUCCESS : Response.RESPONSE_RESULT_ERROR;
 
-    /**
-     * 从文件中导入仓库信息
-     *
-     * @param file 保存有仓库信息的文件
-     * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与
-     * error；key为total表示导入的总条数；key为available表示有效的条数
-     */
-//    @RequestMapping(value = "importRepository", method = RequestMethod.POST)
-//    public
-//    @ResponseBody
-//    Map<String, Object> importRepository(MultipartFile file) throws RepositoryManageServiceException {
-//        // 初始化 Response
-//        Response responseContent = ResponseFactory.newInstance();
-//        String result = Response.RESPONSE_RESULT_ERROR;
-//
-//        // 读取文件
-//        int total = 0;
-//        int available = 0;
-//        if (file != null) {
-//            Map<String, Object> importInfo = repositoryService.importRepository(file);
-//            if (importInfo != null) {
-//                total = (int) importInfo.get("total");
-//                available = (int) importInfo.get("available");
-//                result = Response.RESPONSE_RESULT_SUCCESS;
-//            }
-//        }
-//
-//        // 设置 Response
-//        responseContent.setResponseResult(result);
-//        responseContent.setResponseTotal(total);
-//        responseContent.setCustomerInfo("available", available);
-//        return responseContent.generateResponse();
-//    }
-
-    /**
-     * 导出仓库信息到文件中
-     *
-     * @param searchType 查询类型
-     * @param keyWord    查询关键字
-     * @param response   HttpServletResponse
-     */
-//    @SuppressWarnings("unchecked")
-//    @RequestMapping(value = "exportRepository", method = RequestMethod.GET)
-//    public void exportRepository(@RequestParam("searchType") String searchType, @RequestParam("keyWord") String keyWord,
-//                                 HttpServletResponse response) throws RepositoryManageServiceException, IOException {
-//
-//        // 导出文件名
-//        String fileName = "repositoryInfo.xlsx";
-//
-//        // 查询
-//        List<Repository> repositories;
-//
-//        Map<String, Object> queryResult = query(searchType, keyWord, -1, -1);
-//
-//        if (queryResult != null)
-//            repositories = (List<Repository>) queryResult.get("data");
-//        else
-//            repositories = new ArrayList<>();
-//
-//        // 生成文件
-//        File file = repositoryService.exportRepository(repositories);
-//
-//        // 输出文件
-//        if (file != null) {
-//            // 设置响应头
-//            response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
-//            FileInputStream inputStream = new FileInputStream(file);
-//            OutputStream outputStream = response.getOutputStream();
-//            byte[] buffer = new byte[8192];
-//
-//            int len;
-//            while ((len = inputStream.read(buffer, 0, buffer.length)) > 0) {
-//                outputStream.write(buffer, 0, len);
-//                outputStream.flush();
-//            }
-//
-//            inputStream.close();
-//            outputStream.close();
-//        }
-//    }
+            // 设置 Response
+            responseContent.setResponseResult(result);
+            return responseContent.generateResponse();
+        }
 }
 
