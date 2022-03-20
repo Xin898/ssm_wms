@@ -8,6 +8,8 @@ import com.xin.wms.exception.CustomerManageServiceException;
 import com.xin.wms.exception.ShopsManageServiceException;
 import com.xin.wms.pojo.Customer;
 import com.xin.wms.pojo.Shop;
+import com.xin.wms.pojo.StockOutDO;
+import com.xin.wms.util.aop.UserOperation;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -168,18 +170,87 @@ public class ShopsManageServiceImp implements ShopsManageService {
         return selectAll(-1, -1);
     }
 
+    /**
+     * 检查店铺信息是否满足要求
+     * 必要信息非空
+     *
+     * @param shop 店铺信息实体
+     * @return 返回是否满足要求
+     */
+    private boolean shopCheck(Shop shop) {
+        return shop.getShopName() != null && shop.getShopPlatform() != null && shop.getCustomerUrl() != null;
+    }
+
+    /**
+     * 添加店铺信息
+     *
+     * @param shop 店铺信息
+     * @return 返回一个boolean值，值为true代表更新成功，否则代表失败
+     */
+    @UserOperation(value = "添加店铺信息")
     @Override
-    public boolean addShops(Shop shops) throws ShopsManageServiceException {
+    public boolean addShops(Shop shop) throws ShopsManageServiceException {
+
+        // 插入新的记录
+        if (shop != null) {
+            // 验证
+            if (shopCheck(shop)) {
+                try {
+                    if (null == shopsMapper.selectByName(shop.getShopName())) {
+                        shopsMapper.insert(shop);
+                        return true;
+                    }
+                } catch (PersistenceException e) {
+                    throw new ShopsManageServiceException(e);
+                }
+            }
+        }
         return false;
     }
 
+    /**
+     * 更新店铺信息
+     *
+     * @param shop 店铺信息
+     * @return 返回一个boolean值，值为true代表更新成功，否则代表失败
+     */
+    @UserOperation(value = "修改店铺信息")
     @Override
-    public boolean updateShops(Shop shops) throws ShopsManageServiceException {
+    public boolean updateShops(Shop shop) throws ShopsManageServiceException {
+
+        // 更新记录
+        if (shop != null) {
+            // 检验
+            if (shopCheck(shop)) {
+                try {
+                    // 检查重名
+                    Shop shopFromDB = shopsMapper.selectByName(shop.getShopName());
+                    if (shopFromDB == null || shopFromDB.getId().equals(shop.getId())) {
+                        shopsMapper.update(shop);
+                        return true;
+                    }
+                } catch (PersistenceException e) {
+                    throw new ShopsManageServiceException(e);
+                }
+            }
+        }
         return false;
     }
 
+    /**
+     * 删除店铺信息
+     *
+     * @param Id 店铺ID
+     * @return 返回一个boolean值，值为true代表更新成功，否则代表失败
+     */
     @Override
     public boolean deleteShops(Integer Id) throws ShopsManageServiceException {
-        return false;
+
+        try {
+            shopsMapper.deleteById(Id);
+            return true;
+        } catch (PersistenceException e) {
+            throw new ShopsManageServiceException(e);
+        }
     }
 }
