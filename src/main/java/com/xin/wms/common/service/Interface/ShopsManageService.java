@@ -54,18 +54,18 @@ public interface ShopsManageService {
     /**
      * 添加店铺记录
      *
-     * @param shops 店铺信息
+     * @param shop 店铺信息
      * @return 返回一个boolean值，值为true代表更新成功，否则代表失败
      */
-    boolean addShops(Shop shops) throws ShopsManageServiceException;
+    boolean addShop(Shop shop) throws ShopsManageServiceException;
 
     /**
      * 更新店铺记录
      *
-     * @param shops 店铺
+     * @param shop 店铺
      * @return 返回一个boolean值，值为true代表更新成功，否则代表失败
      */
-    boolean updateShops(Shop shops) throws ShopsManageServiceException;
+    boolean updateShops(Shop shop) throws ShopsManageServiceException;
 
     /**
      * 删除店铺记录

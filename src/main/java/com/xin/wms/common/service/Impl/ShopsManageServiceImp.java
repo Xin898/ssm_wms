@@ -4,20 +4,19 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xin.wms.common.service.Interface.ShopsManageService;
 import com.xin.wms.dao.ShopsMapper;
-import com.xin.wms.exception.CustomerManageServiceException;
 import com.xin.wms.exception.ShopsManageServiceException;
-import com.xin.wms.pojo.Customer;
 import com.xin.wms.pojo.Shop;
-import com.xin.wms.pojo.StockOutDO;
 import com.xin.wms.util.aop.UserOperation;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class ShopsManageServiceImp implements ShopsManageService {
 
     @Autowired
@@ -189,7 +188,7 @@ public class ShopsManageServiceImp implements ShopsManageService {
      */
     @UserOperation(value = "添加店铺信息")
     @Override
-    public boolean addShops(Shop shop) throws ShopsManageServiceException {
+    public boolean addShop(Shop shop) throws ShopsManageServiceException {
 
         // 插入新的记录
         if (shop != null) {
@@ -253,4 +252,6 @@ public class ShopsManageServiceImp implements ShopsManageService {
             throw new ShopsManageServiceException(e);
         }
     }
+
+    //TODO 添加商品浏览功能
 }

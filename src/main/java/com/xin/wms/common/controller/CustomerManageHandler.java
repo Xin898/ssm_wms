@@ -14,10 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * 客户信息管理请求 Handler
+ *
+ * @author Xin
+ */
 @RestController
 @RequestMapping(value = "/**/CustomerManage")
-//客户基本信息管理请求 Handler
 public class CustomerManageHandler {
 
     @Autowired
@@ -109,7 +112,7 @@ public class CustomerManageHandler {
      * @param customer 客户信息
      * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与 error
      */
-    @RequestMapping("/addCustomer")
+    @PutMapping("/addCustomer")
     public
     @ResponseBody
     Map<String, Object> addCustomer(@ModelAttribute Customer customer) throws CustomerManageServiceException {
@@ -218,79 +221,23 @@ public class CustomerManageHandler {
     }
 
     /**
+     * TODO V2功能
      * 导入客户信息
      *
      * @param file 保存有客户信息的文件
      * @return 返回一个map，其中：key 为 result表示操作的结果，包括：success 与
      * error；key为total表示导入的总条数；key为available表示有效的条数
      */
-//    @RequestMapping(value = "importCustomer", method = RequestMethod.POST)
-//    public
-//    @ResponseBody
-//    Map<String, Object> importCustomer(@RequestParam("file") MultipartFile file) throws CustomerManageServiceException {
-//        // 初始化 Response
-//        Response responseContent = ResponseFactory.newInstance();
-//        String result = Response.RESPONSE_RESULT_SUCCESS;
-//
-//        // 读取文件内容
-//        int total = 0;
-//        int available = 0;
-//        if (file == null)
-//            result = Response.RESPONSE_RESULT_ERROR;
-//        Map<String, Object> importInfo = customerManageService.importCustomer(file);
-//        if (importInfo != null) {
-//            total = (int) importInfo.get("total");
-//            available = (int) importInfo.get("available");
-//        }
-//
-//        responseContent.setResponseResult(result);
-//        responseContent.setResponseTotal(total);
-//        responseContent.setCustomerInfo("available", available);
-//        return responseContent.generateResponse();
-//    }
+
 
     /**
+     * TODO V2功能
      * 导出客户信息
      *
      * @param searchType 查找类型
      * @param keyWord    查找关键字
      * @param response   HttpServletResponse
      */
-//    @SuppressWarnings("unchecked")
-//    @RequestMapping(value = "exportCustomer", method = RequestMethod.GET)
-//    public void exportCustomer(@RequestParam("searchType") String searchType, @RequestParam("keyWord") String keyWord,
-//                               HttpServletResponse response) throws CustomerManageServiceException, IOException {
-//
-//        String fileName = "customerInfo.xlsx";
-//
-//        List<Customer> customers = null;
-//        Map<String, Object> queryResult = query(searchType, keyWord, -1, -1);
-//
-//        if (queryResult != null) {
-//            customers = (List<Customer>) queryResult.get("data");
-//        }
-//
-//        // 获取生成的文件
-//        File file = customerManageService.exportCustomer(customers);
-//
-//        // 写出文件
-//        if (file != null) {
-//            // 设置响应头
-//            response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
-//            FileInputStream inputStream = new FileInputStream(file);
-//            OutputStream outputStream = response.getOutputStream();
-//            byte[] buffer = new byte[8192];
-//
-//            int len;
-//            while ((len = inputStream.read(buffer, 0, buffer.length)) > 0) {
-//                outputStream.write(buffer, 0, len);
-//                outputStream.flush();
-//            }
-//
-//            inputStream.close();
-//            outputStream.close();
-//
-//        }
-//    }
+
 }
 
